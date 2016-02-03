@@ -76,13 +76,15 @@ function deleteFolderRecursive(path) {
     }
 };
 
-function chooseCorrectVersion(cortex_config,versions,pkg_name) {
+function chooseCorrectVersion(cortex_config,versions,pkg_name,noBeta) {
     var rule=cortex_config.dependencies[pkg_name];
     var filtedVersions=[];
     versions.forEach(function (item) {
-        if (item.indexOf('beta')==-1) {
+        var version=item;
+        if ((!noBeta)||(item.indexOf('beta')==-1)) {
+            item=item.split('-')[0];
             if (!rule||(rule&&semver.satisfies(item,rule))) {
-                filtedVersions.push(item);
+                filtedVersions.push(version);
             }
         }
     });
