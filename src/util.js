@@ -76,15 +76,21 @@ function deleteFolderRecursive(path) {
     }
 };
 
-function chooseCorrectVersion(cortex_config,versions,pkg_name,noBeta) {
+function chooseCorrectVersion(cortex_config,versions,pkg_name,noBeta,base_path) {
     var rule=cortex_config.dependencies[pkg_name];
     var filtedVersions=[];
     versions.forEach(function (item) {
-        var version=item;
-        if ((!noBeta)||(item.indexOf('beta')==-1)) {
-            item=item.split('-')[0];
-            if (!rule||(rule&&semver.satisfies(item,rule))) {
-                filtedVersions.push(version);
+        if (fs.statSync(base_path+'/'+item).isDirectory()) {
+            var version=item;
+            if ((!noBeta)||(item.indexOf('beta')==-1)) {
+                item=item.split('-')[0];
+                try {
+                    if (!rule||(rule&&semver.satisfies(item,rule))) {
+                        filtedVersions.push(version);
+                    }
+                } catch (e) {
+                    console.warn("file or dir ["+item+"] is weired, but I choose to ignore!");
+                }
             }
         }
     });

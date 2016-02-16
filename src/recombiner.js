@@ -45,7 +45,7 @@ var recombinder=function (opts) {
     packages.forEach(function(item){
         var currentModuleName=item;
         var dir_s=fs.readdirSync(source_path+'/'+item);
-        var ver=util.chooseCorrectVersion(cortex_config,dir_s,item,options.noBeta);
+        var ver=util.chooseCorrectVersion(cortex_config,dir_s,item,options.noBeta,source_path+'/'+item);
         var src_path=source_path+'/'+item+'/'+ver;
         var dst_path=target_path+'/'+item;
 
