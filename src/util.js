@@ -131,6 +131,38 @@ function fixRequire(code) {
     return resultCode;
 }
 
+function processJS(src,dst_path,currentModuleName) {
+    if (fs.existsSync(src)) {//读取删除js对应的源js文件
+        var code=fs.readFileSync(src,'utf8');
+        code=fixRequire(code);//处理require关键字
+        var fc=new Function("" +
+            "var result=[];"+
+            "function  define(alias,dep,func,conf) {"+
+            "result.push({key:alias,code:func.toString(),isMain:!!conf.main});"+
+            "}"+
+            code+
+            "return result;"+
+            "");
+
+        var result=fc();
+        result.forEach(function (obj) {
+            var pkg_name=obj.key;
+            var code=obj.code;
+            var ss=code.substring(code.indexOf('{')+1).split('}');
+            ss.pop();
+            code=ss.join('}');
+            //console.log(code);
+            var _t=pkg_name.split('@');
+            var module_name=_t[0];
+            var module_path=(_t[1].indexOf('/')!=-1?_t[1].substring(_t[1].indexOf('/')):'');
+            if (module_name==currentModuleName&&module_path) {
+                mkdirsSync(path.dirname(dst_path+module_path));
+                fs.writeFileSync(dst_path+module_path,code);
+            }
+        });
+    }
+}
+
 module.exports={
     mkdirsSync:mkdirsSync,
     copy_dir:copy_dir,
@@ -138,5 +170,6 @@ module.exports={
     copy:copy,
     deleteFolderRecursive:deleteFolderRecursive,
     chooseCorrectVersion:chooseCorrectVersion,
-    fixRequire:fixRequire
+    fixRequire:fixRequire,
+    processJS:processJS
 }

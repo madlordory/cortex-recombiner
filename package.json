@@ -1,6 +1,6 @@
 {
   "name": "cortex-recombiner",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "recombine cortex package structure to make it be compatible with webpack",
   "main": "index.js",
   "scripts": {
@@ -24,3 +24,4 @@
     "semver": "^5.1.0"
   }
 }
+
