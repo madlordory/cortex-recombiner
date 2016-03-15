@@ -77,7 +77,10 @@ function deleteFolderRecursive(path) {
 };
 
 function chooseCorrectVersion(cortex_config,versions,pkg_name,noBeta,base_path) {
-    var rule=cortex_config.dependencies[pkg_name];
+    var rule;
+    if (cortex_config.dependencies) {
+        rule=cortex_config.dependencies[pkg_name];    
+    }
     var filtedVersions=[];
     versions.forEach(function (item) {
         if (fs.statSync(base_path+'/'+item).isDirectory()) {
