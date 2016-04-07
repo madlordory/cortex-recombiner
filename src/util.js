@@ -109,9 +109,11 @@ function fixRequire(code) {
 
     resultCode= resultCode.replace(/require\.async\((\s)*["'][\S]+['"](\s)*,/g, function (word) {//require.async("xxx")
         word=word.replace(/require\.async\((\s)*/g,"require([").replace(',','],');
-        return word.replace(/["'](\S)+["']/,function(_p) {
+        return word.replace(/["'](\S+)["']/,function(_p) {
+            var quote = _p[0]
+
             if (_p.length>3&&_p[1]!='.'&&_p[1]!='/'&&_p[1]!='@') {
-                return '"@cortex/'+_p.substring(1,_p.length-1)+'"';
+                return quote + '@cortex/'+_p.substring(1,_p.length-1)+quote;
             } else {
                 return _p;
             }
@@ -119,9 +121,11 @@ function fixRequire(code) {
     });
 
     resultCode= resultCode.replace(/require(\s)*\((\s)*["'](\S)+["'](\s)*\)/g, function (word) {//require("xxx")
-        return word.replace(/["'](\S)+["']/,function(_p) {
+        return word.replace(/["'](\S+)["']/,function(_p) {
+            var quote = _p[0]
+
             if (_p.length>3&&_p[1]!='.'&&_p[1]!='/'&&_p[1]!='@') {
-                return '"@cortex/'+_p.substring(1,_p.length-1)+'"';
+                return quote + '@cortex/'+_p.substring(1,_p.length-1)+quote;
             } else {
                 return _p;
             }
