@@ -143,8 +143,8 @@ function processJS(src,dst_path,currentModuleName) {
             "var result=[];"+
             "function  define(alias,dep,func,conf) {"+
             "result.push({key:alias,code:func.toString(),isMain:!!conf.main});"+
-            "}"+
-            code+
+            "}"+'\n'+
+            code+'\n'+
             "return result;"+
             "");
 

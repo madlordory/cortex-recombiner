@@ -1,6 +1,6 @@
 {
   "name": "cortex-recombiner",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "recombine cortex package structure to make it be compatible with webpack",
   "main": "index.js",
   "scripts": {
