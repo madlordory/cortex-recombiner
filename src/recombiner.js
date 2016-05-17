@@ -37,7 +37,7 @@ var recombinder=function (opts) {
         var tmpPath = source_path + '/' + item,
             stats = fs.statSync(tmpPath);
 
-        if (stats.isDirectory()&&item!='neuron') {
+        if (stats.isDirectory()&&item!='neuron'&&item!=cortex_config.name) {
             packages.push(item);
         } else {
         }
