@@ -105,35 +105,40 @@ function chooseCorrectVersion(cortex_config,versions,pkg_name,noBeta,base_path) 
 function fixRequire(code) {
     var resultCode=code;
 
+    function resolvePath(_p) {//".abc.js" ==> ".abc.js" or "abc/t.js" ==> "@cortex/abc/t.js"  or "/rle.js" ==> "/rle.js"
+        if (_p.length>1&&_p[0]!='.'&&_p[0]!='/'&&_p[0]!='@') {
+            return '@cortex/'+_p;
+        } else {
+            return _p;
+        }
+    }
 
-    resultCode= resultCode.replace(/require\.resolve\((\s)*["'][\S]+['"](\s)*\)/g, function (word) {//require.resolve("xxx")
-        return word.replace(/require\.resolve\((\s)*/g,"require(");
+
+
+    /*
+    * require("xxx") ==> require("xxx")
+    * */
+    resultCode= resultCode.replace(/require\s*\(\s*(["'])\s*([\S]+)\s*(["'])\s*\)/g, function (word,$1,$2,$3) {
+        return "require("+$1+resolvePath($2)+$3+")";
     });
 
-    resultCode= resultCode.replace(/require\.async\((\s)*["'][\S]+['"](\s)*,/g, function (word) {//require.async("xxx")
-        word=word.replace(/require\.async\((\s)*/g,"require([").replace(',','],');
-        return word.replace(/["'](\S+)["']/,function(_p) {
-            var quote = _p[0]
 
-            if (_p.length>3&&_p[1]!='.'&&_p[1]!='/'&&_p[1]!='@') {
-                return quote + '@cortex/'+_p.substring(1,_p.length-1)+quote;
-            } else {
-                return _p;
-            }
-        })
+    /*
+    * require.resolve("xxx") ===> require("!!file!xxx") 强制使用file-loader
+    * */
+    resultCode= resultCode.replace(/require\.resolve\s*\(\s*(["'])\s*([\S]+)\s*(['"])\s*\)/g, function (word,$1,$2,$3) {
+        return "require("+$1+"!!file!"+resolvePath($2)+$3+")";
+    });//
+
+    /*
+    *
+    * require.async("xxx",callback) ==> require(["xxx"],callback)
+    * */
+    resultCode= resultCode.replace(/require\.async\s*\(\s*(["'])\s*([\S]+)\s*(['"])\s*,/g, function (word,$1,$2,$3) {
+        return "require(["+$1+resolvePath($2)+$3+"],";
     });
 
-    resultCode= resultCode.replace(/require(\s)*\((\s)*["'](\S)+["'](\s)*\)/g, function (word) {//require("xxx")
-        return word.replace(/["'](\S+)["']/,function(_p) {
-            var quote = _p[0]
 
-            if (_p.length>3&&_p[1]!='.'&&_p[1]!='/'&&_p[1]!='@') {
-                return quote + '@cortex/'+_p.substring(1,_p.length-1)+quote;
-            } else {
-                return _p;
-            }
-        })
-    });
 
     return resultCode;
 }
