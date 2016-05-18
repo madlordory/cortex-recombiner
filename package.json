@@ -19,6 +19,9 @@
     "url": "https://github.com/madlordory/cortex-recombiner/issues"
   },
   "homepage": "https://github.com/madlordory/cortex-recombiner#readme",
+  "peerDependencies": {
+    "file-loader": "*"
+  },
   "dependencies": {
     "object-assign": "^4.0.1",
     "semver": "^5.1.0"
