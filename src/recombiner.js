@@ -55,7 +55,14 @@ var recombinder=function (opts) {
         util.copy_dir(src_path,dst_path);//文件夹拷贝src->dest
         fs.readdirSync(dst_path).forEach(function (item) {
             if (fs.statSync(dst_path+'/'+item).isFile()&&item=='cortex.json') {
-                fs.renameSync(dst_path+'/'+item,dst_path+'/package.json');
+                var jsonStr=fs.readFileSync(dst_path+'/'+item,'utf8');
+                var resultStr=jsonStr;
+                var obj=JSON.parse(jsonStr);
+                if (obj.hasOwnProperty('dependencies')) obj.dependencies={};//清空cortex依赖，防止npm遍历依赖报错
+                if (obj.hasOwnProperty('devDependencies')) obj.devDependencies={};
+                resultStr=JSON.stringify(obj,undefined,4);
+                fs.writeFileSync(dst_path+'/package.json',resultStr);//必须创建package.json否则会提示错误
+                // fs.renameSync(dst_path+'/'+item,dst_path+'/package.json');
             } else if (fs.statSync(dst_path+'/'+item).isFile()&&path.extname(item)=='.js') {//针对包根目录js
                 fs.unlinkSync(dst_path+'/'+item);//删除js文件
                 util.processJS(src_path+'/'+item,dst_path,currentModuleName);
