@@ -167,6 +167,13 @@ function processJS(src,dst_path,currentModuleName) {
             var _t=pkg_name.split('@');
             var module_name=_t[0];
             var module_path=(_t[1].indexOf('/')!=-1?_t[1].substring(_t[1].indexOf('/')):'');
+            // _t => arttemplate@3.0.4/dist/template-native-debug.js
+            // _t[1] => 3.0.4/dist/template-native-debug.js
+            // module_path => /dist/template-native-debug.js
+            if (path.extname(module_path) === '.json') {
+                // json file
+                code = code.replace('module.exports = ', '');
+            }
             if (module_name==currentModuleName&&module_path) {
                 mkdirsSync(path.dirname(dst_path+module_path));
                 fs.writeFileSync(dst_path+module_path,code);
