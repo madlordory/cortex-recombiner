@@ -71,8 +71,10 @@ var recombinder=function (opts) {
         var cortexConf=JSON.parse(fs.readFileSync(src_path+'/cortex.json','utf8'));
         if (cortexConf&&cortexConf.entries) {
             cortexConf.entries.forEach(function(entry){
-                fs.unlinkSync(path.join(dst_path,entry));//删除js文件
-                util.processJS(path.join(src_path,entry),dst_path,currentModuleName);
+                if (fs.existsSync(path.join(src_path,entry))) {
+                    fs.unlinkSync(path.join(dst_path,entry));//删除js文件
+                    util.processJS(path.join(src_path,entry),dst_path,currentModuleName);
+                }
             });
         }
     });

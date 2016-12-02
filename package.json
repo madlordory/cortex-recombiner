@@ -1,6 +1,6 @@
 {
   "name": "cortex-recombiner",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "recombine cortex package structure to make it be compatible with webpack",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/madlordory/cortex-recombiner.git"
   },
-  "keywords": [
+  "keywords":[
     "cortex"
   ],
   "author": "Eric Zhang",
@@ -27,4 +27,3 @@
     "semver": "^5.1.0"
   }
 }
-
