@@ -45,3 +45,4 @@ thumbs.db
 .idea
 node_modules/
 jscoverage_lib/
+yarn.lock
