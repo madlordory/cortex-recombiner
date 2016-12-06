@@ -1,8 +1,8 @@
 {
   "name": "cortex-recombiner",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "recombine cortex package structure to make it be compatible with webpack",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,9 +22,13 @@
   "peerDependencies": {
     "file-loader": "*"
   },
+  "engines": {
+    "node": ">=4.3.2"
+  },
   "dependencies": {
+    "co": "^4.6.0",
+    "fs-extra-promise": "^0.4.1",
     "lodash": "^4.17.2",
-    "object-assign": "^4.0.1",
     "semver": "^5.1.0"
   }
 }
