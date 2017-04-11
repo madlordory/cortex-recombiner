@@ -4,7 +4,7 @@ recombine the cortex package structure to make it compatible with webpack
 
 ### Usage
 
-#### V4
+#### V4 (async)
 
 ```js
 const recombiner = require('cortex-recombiner');
@@ -18,12 +18,16 @@ recombiner({
     cortex_json_file: './cortex.json',      // the path of cortex config file
     scope: '@cortex',                       // recombined packages scope, require your package as `@cortex/package-name`
     noBeta: false                           // whether ignore cortex beta package in source_path
+}).then(function(result) {
+    // ...
+}, function(error) {
+    // ...
 });
 
 // ...
 ```
 
-#### V3 (async mode)
+#### V3 (async)
 
 ```js
 const recombiner = require('cortex-recombiner');
@@ -46,7 +50,7 @@ recombiner({
 // ...
 ```
 
-#### V1 & V2 (sync mode)
+#### V1 & V2 (sync)
 
 ```js
 const recombiner = require('cortex-recombiner');
